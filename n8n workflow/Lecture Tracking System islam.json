@@ -1,0 +1,2971 @@
+{
+  "name": "Lecture Tracking System islam",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "get-classes",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -1648,
+        -256
+      ],
+      "id": "fcc702cf-82b7-4d20-87c6-66db143f4364",
+      "name": "GET Classes",
+      "webhookId": "1f2762fc-ff7c-4130-a78c-bf591d734481"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "register-student",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -1648,
+        -32
+      ],
+      "id": "c3c4cb6f-fed4-485b-a037-c38366294cce",
+      "name": "POST Register",
+      "webhookId": "26237f22-39c5-4230-8e29-067fcdffe2d3"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1eel7cukc1Gs0krOkVnI5oDIfNy2uYpl0fIUD5RNwj5k",
+          "mode": "list",
+          "cachedResultName": "سرقتك يا اسلام ",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1eel7cukc1Gs0krOkVnI5oDIfNy2uYpl0fIUD5RNwj5k/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 2077656384,
+          "mode": "list",
+          "cachedResultName": "Group Cods",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1eel7cukc1Gs0krOkVnI5oDIfNy2uYpl0fIUD5RNwj5k/edit#gid=2077656384"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.4,
+      "position": [
+        -1424,
+        -256
+      ],
+      "id": "c2ba2a09-7a35-4e3b-8051-6208d4076ab7",
+      "name": "Read Classes from Sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "7CZWZio7IsnrV2oz",
+          "name": "alisaad"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($input.all().map(i => ({ group_id: i.json.group_id, group_name: i.json.group_name }))) }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Access-Control-Allow-Origin",
+                "value": "*"
+              },
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        -1200,
+        -256
+      ],
+      "id": "941a1238-35e5-4ac5-805d-dd427355a9f1",
+      "name": "Return Classes"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1eel7cukc1Gs0krOkVnI5oDIfNy2uYpl0fIUD5RNwj5k",
+          "mode": "list",
+          "cachedResultName": "سرقتك يا اسلام ",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1eel7cukc1Gs0krOkVnI5oDIfNy2uYpl0fIUD5RNwj5k/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1560841313,
+          "mode": "list",
+          "cachedResultName": "Students",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1eel7cukc1Gs0krOkVnI5oDIfNy2uYpl0fIUD5RNwj5k/edit#gid=1560841313"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Student Name": "={{ $json.body.full_name }}",
+            "Grade": "={{ $json.body.group_name }}",
+            "تاريخ الالتحاق": "={{ $json.body.registered_at }}",
+            "Phone Number": "=\"{{ $json.body.phone }}\"",
+            "Group Code": "={{ $json.body.group_id }}",
+            "chat id": "={{ $json.body.chat_id }}"
+          },
+          "matchingColumns": [
+            "chat id"
+          ],
+          "schema": [
+            {
+              "id": "chat id",
+              "displayName": "chat id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Student Name",
+              "displayName": "Student Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Grade",
+              "displayName": "Grade",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Group Code",
+              "displayName": "Group Code",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Phone Number",
+              "displayName": "Phone Number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Telegram name",
+              "displayName": "Telegram name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "تاريخ الالتحاق",
+              "displayName": "تاريخ الالتحاق",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "grade",
+              "displayName": "grade",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "حصة 1",
+              "displayName": "حصة 1",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "حصة 2",
+              "displayName": "حصة 2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "حصة 3",
+              "displayName": "حصة 3",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "حصة 4",
+              "displayName": "حصة 4",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "حصة 5",
+              "displayName": "حصة 5",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "حصة 6",
+              "displayName": "حصة 6",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "حصة 7",
+              "displayName": "حصة 7",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "حصة 8",
+              "displayName": "حصة 8",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.4,
+      "position": [
+        -1424,
+        -32
+      ],
+      "id": "c22ec4d7-7b1f-4ee8-9753-258142b02f56",
+      "name": "Save Student to Sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "LaExj60dNzJX0HqX",
+          "name": "antone"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ success: true, message: 'تم التسجيل بنجاح' }) }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Access-Control-Allow-Origin",
+                "value": "*"
+              },
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        -1200,
+        -32
+      ],
+      "id": "eb6509b3-ebde-45a0-9439-88660b8b8d33",
+      "name": "Return Success"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://telegram-proxy-islam.vercel.app/api/telegram?method=sendMessage",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"chat_id\": \"{{ $json.body.message.chat.id }}\",\n  \"text\": \"👋 أهلاً! اضغط الزرار للتسجيل:\",\n  \"reply_markup\": {\n    \"inline_keyboard\": [[\n      {\n        \"text\": \"\\n 📝 ➡️  اضغط هنا للتسجيل  ⬅️ 📝 \\n\",\n        \"web_app\": {\n          \"url\": \"https://expher510.github.io/student-registration/\"\n        }\n      }\n    ]]\n  }\n}",
+        "options": {}
+      },
+      "id": "6a14622c-acdb-4929-8c1b-8c9a0fb78606",
+      "name": "to student",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -1200,
+        -496
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "17b123c9-0726-4fce-8df0-29dfdf74a85e",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -1648,
+        -496
+      ],
+      "id": "af46635d-2c9f-429f-92da-bab13a7b71a1",
+      "name": "Webhook",
+      "webhookId": "17b123c9-0726-4fce-8df0-29dfdf74a85e"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.body.message.text }}",
+                    "rightValue": "/start",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "417d1dec-04f3-445c-8b11-59e7e3a3bec4"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "883223b1-e286-4497-8492-8a8d4202785b",
+                    "leftValue": "={{ $json.body.callback_query.data }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {}
+          ]
+        },
+        "options": {}
+      },
+      "id": "cc26482b-9865-4990-9e82-69a0b103de3f",
+      "name": "Switch",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [
+        -1424,
+        -512
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1eel7cukc1Gs0krOkVnI5oDIfNy2uYpl0fIUD5RNwj5k",
+          "mode": "list",
+          "cachedResultName": "سرقتك يا اسلام ",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1eel7cukc1Gs0krOkVnI5oDIfNy2uYpl0fIUD5RNwj5k/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1560841313,
+          "mode": "list",
+          "cachedResultName": "Students",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1eel7cukc1Gs0krOkVnI5oDIfNy2uYpl0fIUD5RNwj5k/edit#gid=1560841313"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Telegram name": "={{ $json.result.chat.first_name }} {{ $json.result.chat.last_name }}",
+            "chat id": "={{ $json.result.chat.id }}"
+          },
+          "matchingColumns": [
+            "chat id"
+          ],
+          "schema": [
+            {
+              "id": "chat id",
+              "displayName": "chat id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Student Name",
+              "displayName": "Student Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Grade",
+              "displayName": "Grade",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Group Code",
+              "displayName": "Group Code",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Phone Number",
+              "displayName": "Phone Number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Telegram name",
+              "displayName": "Telegram name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "تاريخ الالتحاق",
+              "displayName": "تاريخ الالتحاق",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "grade",
+              "displayName": "grade",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "حصة 1",
+              "displayName": "حصة 1",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "حصة 2",
+              "displayName": "حصة 2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "حصة 3",
+              "displayName": "حصة 3",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "حصة 4",
+              "displayName": "حصة 4",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "حصة 5",
+              "displayName": "حصة 5",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "حصة 6",
+              "displayName": "حصة 6",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "حصة 7",
+              "displayName": "حصة 7",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "حصة 8",
+              "displayName": "حصة 8",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -976,
+        -496
+      ],
+      "id": "e161641d-2a82-425a-b3db-c9859b24cac1",
+      "name": "Append or update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "LaExj60dNzJX0HqX",
+          "name": "antone"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "1eel7cukc1Gs0krOkVnI5oDIfNy2uYpl0fIUD5RNwj5k",
+          "mode": "list",
+          "cachedResultName": "سرقتك يا اسلام ",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1eel7cukc1Gs0krOkVnI5oDIfNy2uYpl0fIUD5RNwj5k/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1317367072,
+          "mode": "list",
+          "cachedResultName": "Distribution",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1eel7cukc1Gs0krOkVnI5oDIfNy2uYpl0fIUD5RNwj5k/edit#gid=1317367072"
+        },
+        "event": "rowUpdate",
+        "options": {
+          "columnsToWatch": [
+            "stats"
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1680,
+        304
+      ],
+      "id": "67e04645-9c6a-4a72-bbc5-80bbb7822530",
+      "name": "Google Sheets Trigger",
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "4a6xFWGzyqxuyrEr",
+          "name": "Google Sheets Trigger account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        -1456,
+        304
+      ],
+      "id": "211899fd-b28f-4b2d-9aef-345ba455bb8a",
+      "name": "Limit"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1eel7cukc1Gs0krOkVnI5oDIfNy2uYpl0fIUD5RNwj5k",
+          "mode": "list",
+          "cachedResultName": "سرقتك يا اسلام ",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1eel7cukc1Gs0krOkVnI5oDIfNy2uYpl0fIUD5RNwj5k/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1317367072,
+          "mode": "list",
+          "cachedResultName": "Distribution",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1eel7cukc1Gs0krOkVnI5oDIfNy2uYpl0fIUD5RNwj5k/edit#gid=1317367072"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Lesson Code": "={{ $('distribution sheet').item.json[\"Lesson Code\"] }}",
+            "stats": "posted"
+          },
+          "matchingColumns": [
+            "Lesson Code"
+          ],
+          "schema": [
+            {
+              "id": "Group Code",
+              "displayName": "Group Code",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Lesson Code",
+              "displayName": "Lesson Code",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Session ID",
+              "displayName": "Session ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Session number",
+              "displayName": "Session number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Type",
+              "displayName": "Type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Lessons",
+              "displayName": "Lessons",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Topic ",
+              "displayName": "Topic ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "الحالة",
+              "displayName": "الحالة",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Learning objectives 1",
+              "displayName": "Learning objectives 1",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Vocabulary",
+              "displayName": "Vocabulary",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Homework",
+              "displayName": "Homework",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "stats",
+              "displayName": "stats",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -336,
+        304
+      ],
+      "id": "76387c73-a507-4c6c-a06f-1f5faf372b54",
+      "name": "Append or update row in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "LaExj60dNzJX0HqX",
+          "name": "antone"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1eel7cukc1Gs0krOkVnI5oDIfNy2uYpl0fIUD5RNwj5k",
+          "mode": "list",
+          "cachedResultName": "سرقتك يا اسلام ",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1eel7cukc1Gs0krOkVnI5oDIfNy2uYpl0fIUD5RNwj5k/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1317367072,
+          "mode": "list",
+          "cachedResultName": "Distribution",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1eel7cukc1Gs0krOkVnI5oDIfNy2uYpl0fIUD5RNwj5k/edit#gid=1317367072"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "stats",
+              "lookupValue": "post "
+            }
+          ]
+        },
+        "options": {
+          "returnFirstMatch": true
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -1232,
+        304
+      ],
+      "id": "32a93ae5-c11f-45e5-8865-a6075f350556",
+      "name": "distribution sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "LaExj60dNzJX0HqX",
+          "name": "antone"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1eel7cukc1Gs0krOkVnI5oDIfNy2uYpl0fIUD5RNwj5k",
+          "mode": "list",
+          "cachedResultName": "سرقتك يا اسلام ",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1eel7cukc1Gs0krOkVnI5oDIfNy2uYpl0fIUD5RNwj5k/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1560841313,
+          "mode": "list",
+          "cachedResultName": "Students",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1eel7cukc1Gs0krOkVnI5oDIfNy2uYpl0fIUD5RNwj5k/edit#gid=1560841313"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Group Code",
+              "lookupValue": "={{ $json[\"Group Code\"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -1008,
+        304
+      ],
+      "id": "135a82ea-8ed3-4adf-a454-addcf09a29b4",
+      "name": "student",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "LaExj60dNzJX0HqX",
+          "name": "antone"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "# تسجيل الحضور ",
+        "height": 320,
+        "width": 1824,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1744,
+        -1008
+      ],
+      "typeVersion": 1,
+      "id": "6210854f-62d6-48af-b588-1b324bcaaceb",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "# تسجيل بيانات الطالب",
+        "height": 688,
+        "width": 1072,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1744,
+        -576
+      ],
+      "typeVersion": 1,
+      "id": "442cf484-81ab-4e8f-86f5-bf7e22aeb1b3",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "#  ارسال البيانات ",
+        "height": 240,
+        "width": 1520,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1728,
+        208
+      ],
+      "typeVersion": 1,
+      "id": "0f6ddc69-968b-44a5-a94a-1e38fdd4ef40",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "jsCode": "// ابحث في كل الـ rows مش أول واحدة بس\nconst rows = $input.all();\n\nlet result = null;\n\nfor (const item of rows) {\n  const row = item.json;\n  \n  for (let i = 1; i <= 8; i++) {\n    const val = (row[`حصه ${i}`] || '').trim();\n    if (val === 'post') {\n      result = {\n        grop_id: row.grop_id,\n        lecture_num: i,\n        url: row[`url_${i}`] || row['url'] || '',\n        title: row.note || `حصه ${i}`\n      };\n      break;\n    }\n  }\n  \n  if (result) break;\n}\n\nif (!result) {\n  return [];\n}\n\nreturn [{ json: result }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1440,
+        -1344
+      ],
+      "id": "d88ac57d-739b-4965-8e9d-73c854d953ef",
+      "name": "حدد الحصة المتغيرة"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1eel7cukc1Gs0krOkVnI5oDIfNy2uYpl0fIUD5RNwj5k",
+          "mode": "list",
+          "cachedResultName": "سرقتك يا اسلام ",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1eel7cukc1Gs0krOkVnI5oDIfNy2uYpl0fIUD5RNwj5k/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1393625686,
+          "mode": "list",
+          "cachedResultName": "lectures",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1eel7cukc1Gs0krOkVnI5oDIfNy2uYpl0fIUD5RNwj5k/edit#gid=1393625686"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {
+            "grop_id": "={{ $json.grop_id }}"
+          },
+          "matchingColumns": [
+            "grop_id"
+          ],
+          "schema": [
+            {
+              "id": "grop_id",
+              "displayName": "grop_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "note",
+              "displayName": "note",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "url",
+              "displayName": "url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "imgeg",
+              "displayName": "imgeg",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "حصه 1",
+              "displayName": "حصه 1",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "حصه 2",
+              "displayName": "حصه 2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "حصه 3",
+              "displayName": "حصه 3",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "حصه 4",
+              "displayName": "حصه 4",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "حصه 5",
+              "displayName": "حصه 5",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "حصه 6",
+              "displayName": "حصه 6",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "حصه 7",
+              "displayName": "حصه 7",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "حصه 8",
+              "displayName": "حصه 8",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "3feadc54-1a69-4cb1-8550-faed65782292",
+      "name": "حدّث الحصة = posted",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.4,
+      "position": [
+        -128,
+        -1344
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "7CZWZio7IsnrV2oz",
+          "name": "alisaad"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// جهّز بيانات الحضور - اكتب في الكولومن الصح\nconst query = $('Webhook: تسجيل الحضور1').first().json.query;\n\nconst lectureNum = query.lecture_num || '1';\nconst columnName = 'حصة ' + lectureNum;\n\nreturn [{\n  json: {\n    'chat id': query.student_id,\n    [columnName]: 'حضر',\n    'Student Name':$input.first().json['Student Name']\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1008,
+        -992
+      ],
+      "id": "a4d85117-2ff8-46c3-9adc-8db2f5c153c6",
+      "name": "جهّز بيانات الحضور"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1eel7cukc1Gs0krOkVnI5oDIfNy2uYpl0fIUD5RNwj5k",
+          "mode": "list",
+          "cachedResultName": "سرقتك يا اسلام ",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1eel7cukc1Gs0krOkVnI5oDIfNy2uYpl0fIUD5RNwj5k/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1560841313,
+          "mode": "list",
+          "cachedResultName": "Students",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1eel7cukc1Gs0krOkVnI5oDIfNy2uYpl0fIUD5RNwj5k/edit#gid=1560841313"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Group Code",
+              "lookupValue": "={{ $json.grop_id }}"
+            }
+          ]
+        },
+        "options": {
+          "returnAllMatches": "returnAllMatches"
+        }
+      },
+      "id": "148a6ddf-c1d2-451d-bc72-e99d1635b8b2",
+      "name": "اقرأ الطلبة1",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.4,
+      "position": [
+        -1248,
+        -1344
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "7CZWZio7IsnrV2oz",
+          "name": "alisaad"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// ابني اللنكات مع lecture_num\nconst lecture = $('حدد الحصة المتغيرة').first().json;\nconst students = $input.all();\nconst baseUrl = 'https://alisaadeng-n8n.hf.space/webhook/lecture-track';\n\nreturn students.map(s => {\n  const student = s.json;\n\n  const trackUrl = baseUrl\n    + '?student_id=' + encodeURIComponent(student['chat id'] || '')\n    + '&student_name=' + encodeURIComponent(student['Student Name'] || '')\n    + '&lecture_id=' + encodeURIComponent(lecture.grop_id || '')\n    + '&lecture_num=' + encodeURIComponent(lecture.lecture_num || '1')\n    + '&lecture_title=' + encodeURIComponent(lecture.title || '')\n    + '&url=' + encodeURIComponent(lecture.url || '');\n\n  return {\n    json: {\n      chat_id: student['chat id'],\n      full_name: student['Student Name'],\n      lecture_id: lecture.grop_id,\n      lecture_num: lecture.lecture_num,\n      lecture_title: lecture.title,\n      tracking_url: trackUrl\n    }\n  };\n});"
+      },
+      "id": "2cd946f9-31c2-44db-b0d2-d8406612858c",
+      "name": "ابني اللنكات1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1024,
+        -1344
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.removeDuplicates",
+      "typeVersion": 2,
+      "position": [
+        -800,
+        -1344
+      ],
+      "id": "63597e18-3b65-4b12-bc01-3f6a1b0bf434",
+      "name": "Remove Duplicates1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://telegram-proxy-islam.vercel.app/api/telegram?method=sendMessage",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "chat_id",
+              "value": "={{ $input.item.json.chat_id }}"
+            },
+            {
+              "name": "parse_mode",
+              "value": "Markdown"
+            },
+            {
+              "name": "text",
+              "value": "=📚 *محاضرة جديدة!*\n\n{{ $json.full_name }}\n\n*{{ $json.lecture_title }} - حصة {{ $json.lecture_num }}*\n\n👇 اضغط على الرابط لمشاهدة المحاضرة وتسجيل حضورك:\n[▶️ مشاهدة المحاضرة]({{ $json.tracking_url }})\n\n_سيتم تسجيل حضورك تلقائياً عند الضغط_"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "972a0ecc-0792-49ed-9769-f5d2c51ac6f2",
+      "name": "ابعت للطلبة1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -576,
+        -1344
+      ]
+    },
+    {
+      "parameters": {
+        "path": "lecture-track",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "657e079a-3460-4a21-9273-708b3afc4e4f",
+      "name": "Webhook: تسجيل الحضور1",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -1680,
+        -896
+      ],
+      "webhookId": "4ab4f75a-dbbc-42c1-9216-109395c39a78"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1eel7cukc1Gs0krOkVnI5oDIfNy2uYpl0fIUD5RNwj5k",
+          "mode": "list",
+          "cachedResultName": "سرقتك يا اسلام ",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1eel7cukc1Gs0krOkVnI5oDIfNy2uYpl0fIUD5RNwj5k/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1560841313,
+          "mode": "list",
+          "cachedResultName": "Students",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1eel7cukc1Gs0krOkVnI5oDIfNy2uYpl0fIUD5RNwj5k/edit#gid=1560841313"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "chat id",
+              "lookupValue": "={{ $json.query.student_id }}"
+            },
+            {
+              "lookupColumn": "Student Name",
+              "lookupValue": "={{ $json.query.student_name }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -1232,
+        -992
+      ],
+      "id": "43783a45-12c5-46ab-afc2-0de401c17174",
+      "name": "Get row(s) in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "LaExj60dNzJX0HqX",
+          "name": "antone"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1eel7cukc1Gs0krOkVnI5oDIfNy2uYpl0fIUD5RNwj5k",
+          "mode": "list",
+          "cachedResultName": "سرقتك يا اسلام ",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1eel7cukc1Gs0krOkVnI5oDIfNy2uYpl0fIUD5RNwj5k/edit#gid=1560841313"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $('Get row(s) in sheet1').item.json['Group Code'] }}",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [
+            "chat id"
+          ],
+          "schema": [
+            {
+              "id": "chat id",
+              "displayName": "chat id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Student Name",
+              "displayName": "Student Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "حصة 1",
+              "displayName": "حصة 1",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "حصة 2",
+              "displayName": "حصة 2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "حصة 3",
+              "displayName": "حصة 3",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "حصة 4",
+              "displayName": "حصة 4",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "حصة 5",
+              "displayName": "حصة 5",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "حصة 6",
+              "displayName": "حصة 6",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "حصة 7",
+              "displayName": "حصة 7",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "حصة 8",
+              "displayName": "حصة 8",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "حصة 9",
+              "displayName": "حصة 9",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "حصة 10",
+              "displayName": "حصة 10",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "حصة 11",
+              "displayName": "حصة 11",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "حصة 12",
+              "displayName": "حصة 12",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "حصة 13",
+              "displayName": "حصة 13",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "حصة 14",
+              "displayName": "حصة 14",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "حصة 15",
+              "displayName": "حصة 15",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "حصة 16",
+              "displayName": "حصة 16",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "حصة 17",
+              "displayName": "حصة 17",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "حصة 18",
+              "displayName": "حصة 18",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "حصة 19",
+              "displayName": "حصة 19",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "حصة 20",
+              "displayName": "حصة 20",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "حصة 21",
+              "displayName": "حصة 21",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "حصة 22",
+              "displayName": "حصة 22",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "حصة 23",
+              "displayName": "حصة 23",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "حصة 24",
+              "displayName": "حصة 24",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "حصة 25",
+              "displayName": "حصة 25",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "حصة 26",
+              "displayName": "حصة 26",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "حصة 27",
+              "displayName": "حصة 27",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "حصة 28",
+              "displayName": "حصة 28",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "حصة 29",
+              "displayName": "حصة 29",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "حصة 30",
+              "displayName": "حصة 30",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "حصة 31",
+              "displayName": "حصة 31",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "حصة 32",
+              "displayName": "حصة 32",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "bdd132f5-9aef-4644-a54a-72f8dc58a76f",
+      "name": "سجّل الحضور1",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.4,
+      "position": [
+        -784,
+        -992
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "LaExj60dNzJX0HqX",
+          "name": "antone"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "redirect",
+        "redirectURL": "={{ $('Webhook: تسجيل الحضور1').first().json.query.url }}",
+        "options": {}
+      },
+      "id": "d13f806a-dea5-4ece-b1b1-a5a237c8d22e",
+      "name": "Redirect للمحاضرة1",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        -560,
+        -992
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const lecture = $('ابني اللنكات1').first().json;\nconst lectureNum = lecture.lecture_num;\nconst columnName = 'حصه ' + lectureNum;\n\nreturn [{\n  json: {\n    grop_id: lecture.lecture_id,\n    [columnName]: 'posted'\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -352,
+        -1344
+      ],
+      "id": "ddf1b336-28e3-472b-a48c-9247aac88192",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "content": "# ارسال لنك المجاضره ",
+        "height": 304,
+        "width": 1856
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1744,
+        -1424
+      ],
+      "typeVersion": 1,
+      "id": "e7760057-042a-485f-9155-ee0098726b47",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        -560,
+        304
+      ],
+      "id": "d4f86ee6-7766-4147-a8d2-d6663df19865",
+      "name": "Limit1"
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            },
+            {
+              "mode": "everyX",
+              "unit": "minutes"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "1eel7cukc1Gs0krOkVnI5oDIfNy2uYpl0fIUD5RNwj5k",
+          "mode": "list",
+          "cachedResultName": "سرقتك يا اسلام ",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1eel7cukc1Gs0krOkVnI5oDIfNy2uYpl0fIUD5RNwj5k/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1393625686,
+          "mode": "list",
+          "cachedResultName": "lectures",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1eel7cukc1Gs0krOkVnI5oDIfNy2uYpl0fIUD5RNwj5k/edit#gid=1393625686"
+        },
+        "event": "rowUpdate",
+        "options": {
+          "columnsToWatch": [
+            "حصه 1",
+            "حصه 2",
+            "حصه 3",
+            "حصه 4",
+            "حصه 5",
+            "حصه 6",
+            "حصه 7",
+            "حصه 8"
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1696,
+        -1344
+      ],
+      "id": "0e331081-5778-4d4e-8a8c-55998611f77f",
+      "name": "ارسال اللنك للطلاب",
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "4a6xFWGzyqxuyrEr",
+          "name": "Google Sheets Trigger account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "5130c0fe-645b-47f4-8d1d-15d59d6c9b61",
+              "leftValue": "={{ $json.headers[\"user-agent\"] }}",
+              "rightValue": "Bot ",
+              "operator": {
+                "type": "string",
+                "operation": "notContains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -1456,
+        -896
+      ],
+      "id": "ac48a310-f2c1-4a9e-86dc-f270e5494411",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "respondWith": "redirect",
+        "redirectURL": "={{ $('Webhook: تسجيل الحضور1').first().json.query.url }}",
+        "options": {}
+      },
+      "id": "d043acb6-d12d-4ee4-9efe-669b5f3cdcf7",
+      "name": "Redirect للمحاضرة",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        -1232,
+        -800
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1eel7cukc1Gs0krOkVnI5oDIfNy2uYpl0fIUD5RNwj5k",
+          "mode": "list",
+          "cachedResultName": "سرقتك يا اسلام ",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1eel7cukc1Gs0krOkVnI5oDIfNy2uYpl0fIUD5RNwj5k/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $('quiz-result').item.json.body.group_id }}",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [
+            "chat id"
+          ],
+          "schema": [
+            {
+              "id": "chat id",
+              "displayName": "chat id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Student Name",
+              "displayName": "Student Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "حصة 1",
+              "displayName": "حصة 1",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "lesson_1",
+              "displayName": "lesson_1",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "حصة 2",
+              "displayName": "حصة 2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "lesson_2",
+              "displayName": "lesson_2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "حصة 2",
+              "displayName": "حصة 2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "lesson_2",
+              "displayName": "lesson_2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "حصة 3",
+              "displayName": "حصة 3",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "lesson_3",
+              "displayName": "lesson_3",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "حصة 3",
+              "displayName": "حصة 3",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "lesson_3",
+              "displayName": "lesson_3",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "حصة 4",
+              "displayName": "حصة 4",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "lesson_4",
+              "displayName": "lesson_4",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "حصة 4",
+              "displayName": "حصة 4",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "lesson_4",
+              "displayName": "lesson_4",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "حصة 5",
+              "displayName": "حصة 5",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "lesson_5",
+              "displayName": "lesson_5",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "حصة 2",
+              "displayName": "حصة 2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "lesson_2",
+              "displayName": "lesson_2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "حصة 3",
+              "displayName": "حصة 3",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "lesson_3",
+              "displayName": "lesson_3",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "حصة 3",
+              "displayName": "حصة 3",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "lesson_3",
+              "displayName": "lesson_3",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "حصة 4",
+              "displayName": "حصة 4",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "lesson_4",
+              "displayName": "lesson_4",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "حصة 4",
+              "displayName": "حصة 4",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "حصة 2",
+              "displayName": "حصة 2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "lesson_2",
+              "displayName": "lesson_2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "حصة 3",
+              "displayName": "حصة 3",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "lesson_3",
+              "displayName": "lesson_3",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "حصة 3",
+              "displayName": "حصة 3",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "lesson_3",
+              "displayName": "lesson_3",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "حصة 4",
+              "displayName": "حصة 4",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "lesson_4",
+              "displayName": "lesson_4",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "حصة 4",
+              "displayName": "حصة 4",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "lesson_4",
+              "displayName": "lesson_4",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "حصة 5",
+              "displayName": "حصة 5",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "lesson_5",
+              "displayName": "lesson_5",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "حصة 5",
+              "displayName": "حصة 5",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "lesson_5",
+              "displayName": "lesson_5",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "حصة 6",
+              "displayName": "حصة 6",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "lesson_6",
+              "displayName": "lesson_6",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -1200,
+        480
+      ],
+      "id": "2c955b4e-89cf-4eae-9cbd-c1638f0f9aa5",
+      "name": "Append or update row in sheet2",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "LaExj60dNzJX0HqX",
+          "name": "antone"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const body = $input.first().json.body;\n\nconst columnName = body.lesson_code;\n\n// استخراج رقم الحصة وتكوين الاسم\nconst lessonNumber = parseInt(columnName.split('_').pop().replace('L', ''));\nconst lessonKey = `lesson_${lessonNumber}`;\n\nreturn [{\n  json: {\n    'chat id': String(body.student_id),\n    'student_name': body.student_name,\n    [lessonKey]: `${body.score}/${body.total_points}`,\n    \n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1472,
+        480
+      ],
+      "id": "e6ce9390-1dc4-455d-9e17-317c8635ca00",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://telegram-proxy-islam.vercel.app/api/telegram?method=sendMessage",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "chat_id",
+              "value": "={{ $json[\"chat id\"] }}"
+            },
+            {
+              "name": "parse_mode",
+              "value": "Markdown"
+            },
+            {
+              "name": "text",
+              "value": "=🎓 *Hello, {{ $json[\"Student Name\"] }}!*\n\n━━━━━━━━━━━━━━━━━━━\n📖 *Today's Lesson*\n{{ $('distribution sheet').item.json.Lessons }}\n\n━━━━━━━━━━━━━━━━━━━\n🎯 *What You'll Learn*\n{{ $('distribution sheet').item.json[\"Learning objectives 1\"] }}\n\n━━━━━━━━━━━━━━━━━━━\n📝 *Vocabulary*\n{{ $('distribution sheet').item.json.Vocabulary }}{{ $('distribution sheet').item.json.Homework ? \"\\n\\n━━━━━━━━━━━━━━━━━━━\\n🏠 *Homework*\\n\" + $('distribution sheet').item.json.Homework : \"\" }}{{ $('distribution sheet').item.json['Lesson Code'] ? \"\\n\\n━━━━━━━━━━━━━━━━━━━\\n📝 *اختبار المحاضرة:*\\n\\n[▶️ ابدأ الاختبار](https://t.me/C1_msbot/quiz?startapp=\" + $('distribution sheet').item.json['Lesson Code'] + \")\" : \"\" }}\n\n━━━━━━━━━━━━━━━━━━━\n✨ _Good luck & keep it up!_ 🚀"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "57ecf3bf-379e-4278-89b0-ac49c60a5cc3",
+      "name": "to student2",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -784,
+        304
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "quiz-result",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -1680,
+        480
+      ],
+      "id": "f4c5eade-c569-42f3-a256-a2f441962977",
+      "name": "quiz-result",
+      "webhookId": "0a63e435-ca92-485b-9396-a8d7a1dac3be"
+    },
+    {
+      "parameters": {
+        "width": 1056
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1872,
+        464
+      ],
+      "typeVersion": 1,
+      "id": "19010acc-520d-46aa-8006-a9f563bdc0c6",
+      "name": "Sticky Note4"
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "x-forwarded-for": "98.92.10.131",
+            "x-forwarded-proto": "https",
+            "x-forwarded-port": "443",
+            "host": "alisaadeng-n8n.hf.space",
+            "x-amzn-trace-id": "Root=1-69d0b2a4-36d5a5e564d239bc4a42fb72",
+            "content-length": "323",
+            "content-type": "application/json",
+            "x-vercel-id": "fra1::7ndbg-1775284899574-2af797198f30",
+            "x-invocation-id": "fra1::7ndbg-1775284899574-2af797198f30",
+            "accept": "*/*",
+            "accept-language": "*",
+            "sec-fetch-mode": "cors",
+            "user-agent": "node",
+            "accept-encoding": "br, gzip, deflate",
+            "x-request-id": "d1ZeQ1, d1ZeQ1",
+            "x-ip-token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpcCI6Ijk4LjkyLjEwLjEzMSIsInVzZXIiOm51bGwsInV1aWQiOm51bGwsImVycm9yIjpudWxsLCJleHAiOjE3NzUyODQ5NjB9.OFeHpSiN7OIo2m8jS--S7n_3m6jcPjPk8sjOVBUY1Jg",
+            "x-direct-url": "https://alisaadeng-n8n.hf.space/--replicas/5hvdr/webhook/17b123c9-0726-4fce-8df0-29dfdf74a85e"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "update_id": 767307698,
+            "message": {
+              "message_id": 104,
+              "from": {
+                "id": 1988605719,
+                "is_bot": false,
+                "first_name": "Ali",
+                "last_name": "Saad",
+                "language_code": "en"
+              },
+              "chat": {
+                "id": 1988605719,
+                "first_name": "Ali",
+                "last_name": "Saad",
+                "type": "private"
+              },
+              "date": 1775284899,
+              "text": "/start",
+              "entities": [
+                {
+                  "offset": 0,
+                  "length": 6,
+                  "type": "bot_command"
+                }
+              ]
+            }
+          },
+          "webhookUrl": "https://alisaadeng-n8n.hf.space/webhook/17b123c9-0726-4fce-8df0-29dfdf74a85e",
+          "executionMode": "production"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ],
+    "GET Classes": [
+      {
+        "json": {
+          "headers": {
+            "x-forwarded-for": "156.206.204.67",
+            "x-forwarded-proto": "https",
+            "x-forwarded-port": "443",
+            "host": "alisaadeng-n8n.hf.space",
+            "x-amzn-trace-id": "Root=1-69d0caf4-3cd937967f720843757d4c37",
+            "sec-ch-ua-platform": "\"Windows\"",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+            "sec-ch-ua": "\"Chromium\";v=\"146\", \"Not-A.Brand\";v=\"24\", \"Brave\";v=\"146\"",
+            "sec-ch-ua-mobile": "?0",
+            "accept": "*/*",
+            "sec-gpc": "1",
+            "accept-language": "en-US,en;q=0.8",
+            "origin": "https://expher510.github.io",
+            "sec-fetch-site": "cross-site",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-dest": "empty",
+            "referer": "https://expher510.github.io/",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "if-none-match": "W/\"105-AGHwMwnj/R91+scYB7M03mr25CE\"",
+            "priority": "u=1, i",
+            "x-request-id": "x0RnGN, x0RnGN",
+            "x-ip-token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpcCI6IjE1Ni4yMDYuMjA0LjY3IiwidXNlciI6bnVsbCwidXVpZCI6bnVsbCwiZXJyb3IiOm51bGwsImV4cCI6MTc3NTI5MTE4NH0.TVJijqj_moCO-0DpLau6lblakn-Et7MATw1Dmslpz-M",
+            "x-direct-url": "https://alisaadeng-n8n.hf.space/--replicas/5hvdr/webhook/get-classes"
+          },
+          "params": {},
+          "query": {},
+          "body": {},
+          "webhookUrl": "https://alisaadeng-n8n.hf.space/webhook/get-classes",
+          "executionMode": "production"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ],
+    "POST Register": [
+      {
+        "json": {
+          "headers": {
+            "x-forwarded-for": "156.206.204.67",
+            "x-forwarded-proto": "https",
+            "x-forwarded-port": "443",
+            "host": "alisaadeng-n8n.hf.space",
+            "x-amzn-trace-id": "Root=1-69d0cb36-4f42d5e8183556767b670eb9",
+            "content-length": "184",
+            "sec-ch-ua-platform": "\"Windows\"",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+            "sec-ch-ua": "\"Chromium\";v=\"146\", \"Not-A.Brand\";v=\"24\", \"Brave\";v=\"146\"",
+            "content-type": "application/json",
+            "sec-ch-ua-mobile": "?0",
+            "accept": "*/*",
+            "sec-gpc": "1",
+            "accept-language": "en-US,en;q=0.8",
+            "origin": "https://expher510.github.io",
+            "sec-fetch-site": "cross-site",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-dest": "empty",
+            "referer": "https://expher510.github.io/",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "priority": "u=1, i",
+            "x-request-id": "NT06CF, NT06CF",
+            "x-ip-token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpcCI6IjE1Ni4yMDYuMjA0LjY3IiwidXNlciI6bnVsbCwidXVpZCI6bnVsbCwiZXJyb3IiOm51bGwsImV4cCI6MTc3NTI5MTI1MH0.Cdajm5iSEKEMpUxcQQByIv7TSon3Dq_rZ_fwrPVBpx8",
+            "x-direct-url": "https://alisaadeng-n8n.hf.space/--replicas/5hvdr/webhook/register-student"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "full_name": "WAHA",
+            "phone": "01281417171",
+            "group_id": "grp_6am",
+            "group_name": "مجموعة 6 صباحاً",
+            "chat_id": 1988605719,
+            "username": "",
+            "registered_at": "2026-04-04T08:26:29.943Z"
+          },
+          "webhookUrl": "https://alisaadeng-n8n.hf.space/webhook/register-student",
+          "executionMode": "production"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ],
+    "quiz-result": [
+      {
+        "json": {
+          "headers": {
+            "x-forwarded-for": "156.206.242.0",
+            "x-forwarded-proto": "https",
+            "x-forwarded-port": "443",
+            "host": "alisaadeng-n8n.hf.space",
+            "x-amzn-trace-id": "Root=1-69d9d334-7398bbe202513fab2486ec78",
+            "content-length": "249",
+            "sec-ch-ua-platform": "\"Android\"",
+            "user-agent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.7680.177 Mobile Safari/537.36 Telegram-Android/12.6.4 (Infinix mobility limited Infinix X682C; Android 10; SDK 29; AVERAGE)",
+            "sec-ch-ua": "\"Chromium\";v=\"146\", \"Not-A.Brand\";v=\"24\", \"Android WebView\";v=\"146\"",
+            "content-type": "application/json",
+            "sec-ch-ua-mobile": "?1",
+            "accept": "*/*",
+            "origin": "https://quiz-zeta-six-19.vercel.app",
+            "x-requested-with": "org.telegram.messenger",
+            "sec-fetch-site": "cross-site",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-dest": "empty",
+            "referer": "https://quiz-zeta-six-19.vercel.app/",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "ar,ar-EG;q=0.9,en-US;q=0.8,en;q=0.7",
+            "priority": "u=1, i",
+            "x-request-id": "bBzeHz, bBzeHz",
+            "x-ip-token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpcCI6IjE1Ni4yMDYuMjQyLjAiLCJ1c2VyIjpudWxsLCJ1dWlkIjpudWxsLCJlcnJvciI6bnVsbCwiZXhwIjoxNzc1ODgzMTIwfQ.Y_jkJZO9BaKYLtiR4VqllNZRcVtjDiUFjWWdlf0InMY",
+            "x-direct-url": "https://alisaadeng-n8n.hf.space/--replicas/b2mpw/webhook/quiz-result"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "student_id": "1988605719",
+            "student_name": "علي سعد",
+            "group_id": "G2B Online",
+            "lesson_code": "G4_T2_U9_L5",
+            "session_num": "3",
+            "score": 4,
+            "total_points": 32,
+            "percentage": 13,
+            "correct_count": 2,
+            "wrong_count": 14,
+            "submitted_at": "2026-04-11T04:50:59.579Z"
+          },
+          "webhookUrl": "https://alisaadeng-n8n.hf.space/webhook/quiz-result",
+          "executionMode": "production"
+        }
+      }
+    ],
+    "Webhook: تسجيل الحضور1": [
+      {
+        "json": {
+          "headers": {
+            "x-forwarded-for": "156.206.242.0",
+            "x-forwarded-proto": "https",
+            "x-forwarded-port": "443",
+            "host": "alisaadeng-n8n.hf.space",
+            "x-amzn-trace-id": "Root=1-69db000d-24a0c949756ab5777b8db474",
+            "sec-ch-ua": "\"Brave\";v=\"147\", \"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"147\"",
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": "\"Windows\"",
+            "upgrade-insecure-requests": "1",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+            "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
+            "sec-gpc": "1",
+            "accept-language": "en-US,en;q=0.5",
+            "sec-fetch-site": "cross-site",
+            "sec-fetch-mode": "navigate",
+            "sec-fetch-user": "?1",
+            "sec-fetch-dest": "document",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "priority": "u=0, i",
+            "cookie": "rl_page_init_referrer=RudderEncrypt%3AU2FsdGVkX19E%2F%2FZXOIwDNr%2Fq9qDSD1qOk1qakJbsPpo%3D; rl_page_init_referring_domain=RudderEncrypt%3AU2FsdGVkX1%2B8OlG9xeVT2LJepjATj%2FU6ZS%2BUMetPWXo%3D; rl_anonymous_id=RudderEncrypt%3AU2FsdGVkX1%2BhdKgEoBJowv%2BSlMYKAMhB6xXdsDw5OQsTB8SfQAlmmyjkMLWcxZsJbrWeDhb3DvtBm4Eo0UBBLw%3D%3D; rl_user_id=RudderEncrypt%3AU2FsdGVkX1%2BgdHD8rUPSMSniX7n7uBM2dUncM94HIW%2FUq%2Bg6QZ7T6TPkzLj6ttlI2O%2FrwtE1Zk%2Fe3S9BF3YT8I4%2FtAgJi8E98K87x8m1m3fSf%2Frgn9mSPV7P2VHpvFdbf01C%2FkIuJIkg33snxZQJ8Ak%2BpTVAXlWj%2FSTyslpQsb8%3D; rl_trait=RudderEncrypt%3AU2FsdGVkX1%2FGmKMjmjfDMpTNg%2Bfy3jslD7KkPpEr5OPXdqsf68iWcge5cKckMfiRYEG0Yc4Ax9uhxYGudiZCOPRX5FK8Rpo5N%2BrXOuIEQmtiMfWdhpVNcItpDICDrmWawoim9uH8CsN65MF%2FtaO75NFzwutIGbxM0fl8It%2B988U%3D; rl_session=RudderEncrypt%3AU2FsdGVkX19Pry6tX1yI57GRW6fVa2lQHH73d3OHBbHzXwWkPoUA9sOd%2BmN3YRR3T%2FkH4WfYbOGjJFExu9Yhy05MmWJJgoPqNFrtmm4iMRv85kJKxUMxwuEaXAMdATi6fs7S1ByzoMiJC6T7Mpuf0g%3D%3D; ph_phc_4URIAm1uYfJO7j8kWSe0J8lc8IqnstRLS7Jx8NcakHo_posthog=%7B%22%24device_id%22%3A%22019cc205-5a0a-7be4-ae5c-2f12dcad45ea%22%2C%22distinct_id%22%3A%227882a25036dfb1bd601050f0ac20700cd6d53895d09022f7a0ccea975f5b96d4%233b0af29f-6a23-4e2f-a6b6-51ae1ce4caaf%22%2C%22%24sesid%22%3A%5B1775960058843%2C%22019d7f46-623c-7da8-80dc-133ef5ca86c5%22%2C1775956812347%5D%2C%22%24epp%22%3Atrue%2C%22%24initial_person_info%22%3A%7B%22r%22%3A%22%24direct%22%2C%22u%22%3A%22https%3A%2F%2Falisaadeng-n8n.hf.space%2Fsignin%3Fredirect%3D%25252F%22%7D%2C%22%24user_state%22%3A%22identified%22%7D",
+            "x-request-id": "RzlVsH, RzlVsH",
+            "x-ip-token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpcCI6IjE1Ni4yMDYuMjQyLjAiLCJ1c2VyIjpudWxsLCJ1dWlkIjpudWxsLCJlcnJvciI6bnVsbCwiZXhwIjoxNzc1OTYwMTM3fQ.7npy-RnNlVwJpb2nu2N7FAvwxJhGO5NSCH-kQAZ0IHk",
+            "x-direct-url": "https://alisaadeng-n8n.hf.space/--replicas/pxtkp/webhook/lecture-track?student_id=1988605719&student_name=%D8%B9%D9%84%D9%8A%20%D8%B3%D8%B9%D8%AF&lecture_id=G2A&lecture_num=1&lecture_title=%D9%85%D8%AD%D8%A7%D8%B6%D8%B1%D8%A9%20%D8%A7%D9%84%D8%AC%D8%A8%D8%B1&url=https%3A%2F%2Fyoutube.com%2F"
+          },
+          "params": {},
+          "query": {
+            "student_id": "1988605719",
+            "student_name": "علي سعد",
+            "lecture_id": "G2A",
+            "lecture_num": "1",
+            "lecture_title": "محاضرة الجبر",
+            "url": "https://youtube.com/"
+          },
+          "body": {},
+          "webhookUrl": "https://alisaadeng-n8n.hf.space/webhook/lecture-track",
+          "executionMode": "production"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "connections": {
+    "GET Classes": {
+      "main": [
+        [
+          {
+            "node": "Read Classes from Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Classes from Sheet": {
+      "main": [
+        [
+          {
+            "node": "Return Classes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "POST Register": {
+      "main": [
+        [
+          {
+            "node": "Save Student to Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save Student to Sheet": {
+      "main": [
+        [
+          {
+            "node": "Return Success",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "to student",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "to student": {
+      "main": [
+        [
+          {
+            "node": "Append or update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets Trigger": {
+      "main": [
+        [
+          {
+            "node": "Limit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit": {
+      "main": [
+        [
+          {
+            "node": "distribution sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "distribution sheet": {
+      "main": [
+        [
+          {
+            "node": "student",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "student": {
+      "main": [
+        [
+          {
+            "node": "to student2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "حدد الحصة المتغيرة": {
+      "main": [
+        [
+          {
+            "node": "اقرأ الطلبة1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "جهّز بيانات الحضور": {
+      "main": [
+        [
+          {
+            "node": "سجّل الحضور1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "اقرأ الطلبة1": {
+      "main": [
+        [
+          {
+            "node": "ابني اللنكات1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ابني اللنكات1": {
+      "main": [
+        [
+          {
+            "node": "Remove Duplicates1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Remove Duplicates1": {
+      "main": [
+        [
+          {
+            "node": "ابعت للطلبة1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ابعت للطلبة1": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook: تسجيل الحضور1": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet1": {
+      "main": [
+        [
+          {
+            "node": "جهّز بيانات الحضور",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "سجّل الحضور1": {
+      "main": [
+        [
+          {
+            "node": "Redirect للمحاضرة1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "حدّث الحصة = posted",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit1": {
+      "main": [
+        [
+          {
+            "node": "Append or update row in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ارسال اللنك للطلاب": {
+      "main": [
+        [
+          {
+            "node": "حدد الحصة المتغيرة",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Redirect للمحاضرة",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "Append or update row in sheet2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "to student2": {
+      "main": [
+        [
+          {
+            "node": "Limit1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "quiz-result": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "timeSavedMode": "fixed",
+    "timezone": "Africa/Cairo",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": true
+  },
+  "versionId": "740c72a4-7ebd-4849-8f13-740ba550b569",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "7882a25036dfb1bd601050f0ac20700cd6d53895d09022f7a0ccea975f5b96d4"
+  },
+  "id": "8vIOgZFSwViIxISI",
+  "tags": []
+}
