@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Mr. Islam Rageh — اختبار المحاضرة</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet"/>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0f0f0f;--bg2:#1a1a1a;--bg3:#222;--card:#1c1c1c;
+  --border:#2a2a2a;--border2:#333;--text:#f0f0f0;--text2:#888;--text3:#555;
+  --blue:#3b82f6;--blue-dim:#1e3a5f;
+  --green:#22c55e;--green-dim:#0f2a1a;
+  --red:#ef4444;--red-dim:#2a0f0f;
+  --amber:#f59e0b;--amber-dim:#2a1f04;
+  --r:14px;--rs:10px;
+}
+body{
+  font-family:'Cairo',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;
+  background-image:radial-gradient(ellipse at 20% 20%,rgba(59,130,246,.06) 0%,transparent 60%),
+    radial-gradient(ellipse at 80% 80%,rgba(59,130,246,.04) 0%,transparent 60%);
+}
+.header{text-align:center;padding:1.5rem 1rem 1rem;border-bottom:1px solid var(--border)}
+.logo-wrap{
+  width:80px;height:80px;border-radius:50%;
+  background:linear-gradient(135deg,#1a1a2e,#0f3460);
+  border:3px solid var(--blue);display:flex;align-items:center;justify-content:center;
+  margin:0 auto .75rem;box-shadow:0 0 30px rgba(59,130,246,.25);
+  font-size:13px;font-weight:900;color:var(--blue);line-height:1.1;text-align:center;
+}
+.logo-inner span{display:block;font-size:9px;color:var(--text2);font-weight:600;letter-spacing:2px;margin-top:2px}
+.teacher-name{font-size:18px;font-weight:900}
+.teacher-sub{font-size:11px;font-weight:700;color:var(--text2);letter-spacing:3px;margin-top:2px}
+.wrap{max-width:480px;margin:0 auto;padding:1.25rem 1rem 5rem}
+.scr{display:none}.scr.on{display:block;animation:up .25s ease}
+@keyframes up{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.loading-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;gap:1rem}
+.spin{width:32px;height:32px;border:3px solid var(--border2);border-top-color:var(--blue);border-radius:50%;animation:sp .75s linear infinite;display:inline-block}
+@keyframes sp{to{transform:rotate(360deg)}}
+.loading-txt{color:var(--text2);font-size:14px}
+.error-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;gap:.75rem;text-align:center;padding:2rem}
+.error-icon{font-size:48px;margin-bottom:.5rem}
+.error-title{font-size:18px;font-weight:900;color:var(--red)}
+.error-msg{font-size:14px;color:var(--text2);line-height:1.7}
+.sec-title{font-size:18px;font-weight:900;margin-bottom:.3rem}
+.sec-sub{font-size:13px;color:var(--text2);margin-bottom:1.25rem;line-height:1.7}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:1.1rem 1.25rem;margin-bottom:.85rem}
+.stat{display:flex;justify-content:space-between;padding:.65rem 0;border-bottom:1px solid var(--border);font-size:14px;align-items:center}
+.stat:last-child{border-bottom:none}
+.sl{color:var(--text2)}.sr{font-weight:700}
+.info-bar{background:var(--blue-dim);border:1px solid var(--blue);border-radius:var(--rs);padding:.65rem 1rem;margin-bottom:1rem;font-size:14px;color:var(--blue);font-weight:700}
+.prog-bar{height:4px;background:var(--border2);border-radius:2px;overflow:hidden;margin:.75rem 0 4px}
+.prog-fill{height:100%;background:var(--blue);border-radius:2px;transition:.4s}
+.prog-meta{display:flex;justify-content:space-between;font-size:12px;color:var(--text3);margin-bottom:.85rem}
+.q-num{font-size:11px;font-weight:700;color:var(--blue);letter-spacing:1px;margin-bottom:.5rem}
+.q-txt{font-size:16px;font-weight:700;line-height:1.7;margin-bottom:1rem}
+.opt{
+  width:100%;text-align:right;padding:14px 16px;font-size:14px;font-weight:600;
+  border:1px solid var(--border2);border-radius:var(--rs);
+  background:var(--bg2);color:var(--text);cursor:pointer;margin-bottom:.55rem;
+  display:block;font-family:'Cairo',sans-serif;transition:.18s;line-height:1.5;
+}
+.opt:hover:not(:disabled){background:var(--bg3);border-color:var(--blue)}
+.opt.ok{border-color:var(--green)!important;background:var(--green-dim)!important;color:var(--green)!important;font-weight:800}
+.opt.no{border-color:var(--red)!important;background:var(--red-dim)!important;color:var(--red)!important}
+.opt:disabled{cursor:not-allowed;opacity:.8}
+.fb{font-size:13px;min-height:22px;padding:.4rem 0;color:var(--text2)}
+.fb.ok{color:var(--green);font-weight:700}.fb.no{color:var(--red);font-weight:700}
+.btn{width:100%;padding:14px 16px;border:1px solid var(--border2);border-radius:var(--rs);background:var(--bg2);color:var(--text);font-size:15px;font-weight:700;cursor:pointer;margin-bottom:.5rem;transition:.18s;font-family:'Cairo',sans-serif}
+.btn:hover:not(:disabled){background:var(--bg3)}
+.btn.pri{background:var(--blue);color:#fff;border-color:var(--blue);box-shadow:0 4px 20px rgba(59,130,246,.3)}
+.btn.pri:hover:not(:disabled){background:#2563eb}
+.btn:disabled{opacity:.35;cursor:not-allowed}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700;margin-bottom:.85rem}
+.badge.blue{background:var(--blue-dim);color:var(--blue);border:1px solid var(--blue)}
+.badge.green{background:var(--green-dim);color:var(--green);border:1px solid var(--green)}
+.badge.amber{background:var(--amber-dim);color:var(--amber);border:1px solid var(--amber)}
+.badge.red{background:var(--red-dim);color:var(--red);border:1px solid var(--red)}
+.big-pct{font-size:72px;font-weight:900;text-align:center;margin:1rem 0 .2rem;letter-spacing:-3px}
+.pct-sub{font-size:14px;text-align:center;color:var(--text2);margin-bottom:1.5rem}
+.student-card{display:flex;align-items:center;gap:.85rem;padding:1rem 1.25rem;background:var(--blue-dim);border:1px solid var(--blue);border-radius:var(--r);margin-bottom:1rem}
+.avatar{width:44px;height:44px;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:16px;flex-shrink:0}
+.sname{font-size:15px;font-weight:800;color:var(--blue)}
+.scode{font-size:11px;color:var(--text2);margin-top:2px}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo-wrap">
+    <div class="logo-inner">RAGEH<span>MATHEMATICS</span></div>
+  </div>
+  <div class="teacher-name">Mr. Islam Rageh</div>
+  <div class="teacher-sub">Mathematics</div>
+</div>
+
+<div class="wrap">
+
+  <div id="s-loading" class="scr on">
+    <div class="loading-screen">
+      <div class="spin"></div>
+      <div class="loading-txt">جاري تحميل بياناتك...</div>
+    </div>
+  </div>
+
+  <div id="s-error" class="scr">
+    <div class="error-screen">
+      <div class="error-icon">⚠️</div>
+      <div class="error-title" id="err-title">خطأ</div>
+      <div class="error-msg" id="err-msg"></div>
+    </div>
+  </div>
+
+  <div id="s3" class="scr">
+    <div class="badge blue">مرحباً 👋</div>
+    <div class="sec-title" id="s3-hi"></div>
+    <p class="sec-sub">أنت على وشك تبدأ الاختبار — اتأكد إنك مستعد!</p>
+    <div class="student-card">
+      <div class="avatar" id="s3-avatar"></div>
+      <div>
+        <div class="sname" id="s3-name"></div>
+        <div class="scode" id="s3-id"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="stat"><span class="sl">المجموعة</span><span class="sr" id="s3-grp"></span></div>
+      <div class="stat"><span class="sl">المحاضرة</span><span class="sr" id="s3-les"></span></div>
+      <div class="stat"><span class="sl">عدد الأسئلة</span><span class="sr" id="s3-qn">—</span></div>
+      <div class="stat"><span class="sl">إجمالي الدرجات</span><span class="sr" id="s3-pts">—</span></div>
+    </div>
+    <button class="btn pri" id="s3-btn" onclick="beginQuiz()" disabled>ابدأ الاختبار ←</button>
+  </div>
+
+  <div id="s4" class="scr">
+    <div class="info-bar" id="s4-bar"></div>
+    <div class="prog-bar"><div class="prog-fill" id="pfill" style="width:0%"></div></div>
+    <div class="prog-meta"><span id="ptxt"></span><span id="pppts"></span></div>
+    <div class="card">
+      <div class="q-num" id="qnum"></div>
+      <div class="q-txt" id="qtxt"></div>
+      <div id="opts"></div>
+    </div>
+    <div class="fb" id="fb"></div>
+    <button class="btn pri" id="btn-next" onclick="nextQ()" style="display:none">التالي ←</button>
+  </div>
+
+  <div id="s5" class="scr">
+    <div id="rbadge"></div>
+    <div class="sec-title" id="rtitle"></div>
+    <p class="sec-sub" id="rsub"></p>
+    <div class="big-pct" id="rpct"></div>
+    <div class="pct-sub" id="rpsub"></div>
+    <div class="card">
+      <div class="stat"><span class="sl">الطالب</span><span class="sr" id="rname"></span></div>
+      <div class="stat"><span class="sl">المجموعة</span><span class="sr" id="rgrp"></span></div>
+      <div class="stat"><span class="sl">المحاضرة</span><span class="sr" id="rles"></span></div>
+      <div class="stat"><span class="sl">صح ✓</span><span class="sr" id="rok" style="color:var(--green)"></span></div>
+      <div class="stat"><span class="sl">غلط ✗</span><span class="sr" id="rno" style="color:var(--red)"></span></div>
+      <div class="stat"><span class="sl">الدرجة</span><span class="sr" id="rpts"></span></div>
+      <div class="stat"><span class="sl">التسجيل</span><span class="sr" id="rsave">...</span></div>
+    </div>
+    <button class="btn" onclick="location.reload()" style="margin-top:.5rem">← حاول تاني</button>
+  </div>
+
+</div>
+
+<script>
+const SHEET_ID = '1eel7cukc1Gs0krOkVnI5oDIfNy2uYpl0fIUD5RNwj5k';
+const EXAM_GID = '1427658321';
+const STD_GID  = '1560841313';
+const DIST_GID = '1317367072';
+const SAVE_WH  = 'https://alisaadeng-n8n.hf.space/webhook/quiz-result';
+
+let G = {
+  student:null, lessonCode:'', sessionNum:'',
+  groupCode:'', groupName:'',
+  questions:[], cur:0, score:0, correct:0, wrong:0,
+  totalPts:0, answered:false
+};
+
+const go = id => {
+  document.querySelectorAll('.scr').forEach(s => s.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+};
+const shuffle = a => {
+  const b=[...a];
+  for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}
+  return b;
+};
+const initials = n => (n||'?').split(' ').slice(0,2).map(w=>w[0]||'').join('').toUpperCase()||'؟';
+
+function showError(title, msg){
+  document.getElementById('err-title').textContent = title;
+  document.getElementById('err-msg').textContent   = msg;
+  go('s-error');
+}
+
+async function gviz(gid){
+  const t = await(await fetch(
+    `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&gid=${gid}`
+  )).text();
+  return JSON.parse(t.match(/google\.visualization\.Query\.setResponse\(([\s\S]*?)\);?\s*$/)[1]);
+}
+
+async function init(){
+  const tg = window.Telegram?.WebApp;
+  let chatId = '', displayName = '';
+
+  if(tg && tg.initDataUnsafe?.user){
+    tg.ready();
+    tg.expand();
+    const u  = tg.initDataUnsafe.user;
+    chatId      = String(u.id);
+    displayName = [u.first_name, u.last_name].filter(Boolean).join(' ');
+  } else {
+    const p = new URLSearchParams(window.location.search);
+    chatId      = p.get('student_id') || '';
+    displayName = decodeURIComponent(p.get('student_name') || 'تجربة');
+  }
+
+  if(!chatId){
+    showError('افتح من تيليجرام 📱', 'لازم تفتح الاختبار من رابط تيليجرام عشان نعرف هويتك تلقائياً.');
+    return;
+  }
+
+  const startParam = tg?.initDataUnsafe?.start_param || '';
+  const urlParam   = new URLSearchParams(window.location.search).get('lesson_code') || '';
+  G.lessonCode     = startParam || urlParam;
+
+  if(!G.lessonCode){
+    showError('مفيش اختبار 📋', 'افتح الرابط اللي بعته المدرس عشان تبدأ الاختبار.');
+    return;
+  }
+
+  try{
+    const json = await gviz(STD_GID);
+    const cols = json.table.cols.map(c => c.label);
+    const rows = json.table.rows.map(r => {
+      const o={};
+      r.c.forEach((cell,i) => { o[cols[i]] = cell&&cell.v!==null ? String(cell.v).trim() : ''; });
+      return o;
+    });
+    const student = rows.find(s => s['chat id'] === chatId);
+    if(!student){
+      showError('مش مسجل ❌', `الـ Telegram ID بتاعك (${chatId}) مش موجود في قائمة الطلاب.\nكلم المدرس عشان يضيفك.`);
+      return;
+    }
+    G.student   = student;
+    G.groupCode = student['Group Code'] || '';
+    G.groupName = student['Grade'] || G.groupCode;
+  }catch(e){
+    showError('خطأ في تحميل البيانات', e.message);
+    return;
+  }
+
+  try{
+    const json = await gviz(DIST_GID);
+    const cols = json.table.cols.map(c => c.label);
+    const rows = json.table.rows.map(r => {
+      const o={};
+      r.c.forEach((cell,i) => { o[cols[i]] = cell&&cell.v!==null ? String(cell.v).trim() : ''; });
+      return o;
+    });
+    const distRow = rows.find(r => r['Lesson Code'] === G.lessonCode);
+    G.sessionNum  = distRow ? String(distRow['Session number'] || '') : '';
+  }catch(e){
+    G.sessionNum = '';
+  }
+
+  await loadQs();
+}
+
+async function loadQs(){
+  try{
+    const json = await gviz(EXAM_GID);
+    const qs = json.table.rows.reduce((acc, row) => {
+      const c = row.c;
+      if(!c||!c[0]||!c[0].v||String(c[0].v).trim()!==G.lessonCode) return acc;
+      const opts = ['A','B','C','D']
+        .map((l,i) => ({l, t: c[3+i]&&c[3+i].v ? String(c[3+i].v) : ''}))
+        .filter(o => o.t);
+      acc.push({
+        q:       c[2]&&c[2].v ? String(c[2].v) : '',
+        opts,
+        correct: c[7]&&c[7].v ? String(c[7].v).trim().toUpperCase() : 'A',
+        pts:     c[8]&&c[8].v ? Number(c[8].v) : 2
+      });
+      return acc;
+    }, []);
+
+    if(!qs.length) throw new Error('مفيش أسئلة للمحاضرة: ' + G.lessonCode);
+
+    G.questions = shuffle(qs.map(q => {
+      const ct = q.opts.find(o=>o.l===q.correct)?.t || '';
+      const sh = shuffle(q.opts);
+      return {...q, opts:sh, correct:sh.find(o=>o.t===ct)?.l||q.correct};
+    }));
+    G.totalPts = G.questions.reduce((s,q) => s+q.pts, 0);
+
+    const name = G.student['Student Name'] || '—';
+    document.getElementById('s3-hi').textContent     = 'أهلاً، ' + name + '!';
+    document.getElementById('s3-avatar').textContent = initials(name);
+    document.getElementById('s3-name').textContent   = name;
+    document.getElementById('s3-id').textContent     = 'ID: ' + G.student['chat id'];
+    document.getElementById('s3-grp').textContent    = G.groupName || G.groupCode || '—';
+    document.getElementById('s3-les').textContent    = G.lessonCode;
+    document.getElementById('s3-qn').textContent     = G.questions.length + ' سؤال';
+    document.getElementById('s3-pts').textContent    = G.totalPts + ' نقطة';
+    document.getElementById('s3-btn').disabled       = false;
+    go('s3');
+
+  }catch(e){
+    showError('خطأ في تحميل الأسئلة ❌', e.message);
+  }
+}
+
+function beginQuiz(){
+  G.cur=0; G.score=0; G.correct=0; G.wrong=0; G.answered=false;
+  document.getElementById('s4-bar').textContent = '👤 ' + (G.student['Student Name']||'') + ' — ' + G.lessonCode;
+  go('s4'); renderQ();
+}
+
+function renderQ(){
+  const q=G.questions[G.cur], total=G.questions.length, idx=G.cur+1;
+  document.getElementById('pfill').style.width = Math.round(G.cur/total*100)+'%';
+  document.getElementById('ptxt').textContent  = 'سؤال '+idx+' من '+total;
+  document.getElementById('pppts').textContent = q.pts+' نقطة';
+  document.getElementById('qnum').textContent  = 'سؤال '+idx;
+  document.getElementById('qtxt').textContent  = q.q;
+  const fb=document.getElementById('fb'); fb.textContent=''; fb.className='fb';
+  document.getElementById('btn-next').style.display='none';
+  G.answered=false;
+  const wrap=document.getElementById('opts'); wrap.innerHTML='';
+  q.opts.forEach(o=>{
+    const b=document.createElement('button');
+    b.className='opt'; b.textContent=o.l+'.  '+o.t; b.dataset.l=o.l;
+    b.onclick=()=>pick(o.l,b); wrap.appendChild(b);
+  });
+}
+
+function pick(label,btn){
+  if(G.answered) return;
+  G.answered=true;
+  const q=G.questions[G.cur];
+  document.querySelectorAll('.opt').forEach(b=>b.disabled=true);
+  const ok=label===q.correct;
+  btn.classList.add(ok?'ok':'no');
+  if(!ok){
+    document.querySelectorAll('.opt').forEach(b=>{if(b.dataset.l===q.correct)b.classList.add('ok');});
+    G.wrong++;
+    const fb=document.getElementById('fb');
+    fb.textContent='✗  الإجابة الصح: '+q.correct+'.  '+(q.opts.find(o=>o.l===q.correct)?.t||'');
+    fb.className='fb no';
+  }else{
+    G.score+=q.pts; G.correct++;
+    const fb=document.getElementById('fb');
+    fb.textContent='✓  إجابة صح!'; fb.className='fb ok';
+  }
+  const nb=document.getElementById('btn-next');
+  nb.style.display='block';
+  nb.textContent=G.cur===G.questions.length-1?'عرض النتيجة →':'التالي ←';
+}
+
+function nextQ(){
+  if(G.cur<G.questions.length-1){G.cur++;renderQ();}
+  else showResult();
+}
+
+async function showResult(){
+  go('s5');
+  const pct=Math.round(G.score/G.totalPts*100);
+  let bc='green',title='ممتاز! 🌟',sub='أداء رائع جداً، استمر!';
+  if(pct<80){bc='amber';title='كويس 👍';sub='في مجال للتحسين.';}
+  if(pct<60){bc='red';title='حاول تاني 💪';sub='راجع المحاضرة وجرب تاني.';}
+  document.getElementById('rbadge').innerHTML=`<div class="badge ${bc}">${title}</div>`;
+  document.getElementById('rtitle').textContent=title;
+  document.getElementById('rsub').textContent=sub;
+  document.getElementById('rpct').textContent=pct+'%';
+  document.getElementById('rpct').style.color=bc==='green'?'var(--green)':bc==='amber'?'var(--amber)':'var(--red)';
+  document.getElementById('rpsub').textContent=G.score+' من '+G.totalPts+' نقطة';
+  document.getElementById('rname').textContent=G.student['Student Name']||'—';
+  document.getElementById('rgrp').textContent=G.groupName||G.groupCode||'—';
+  document.getElementById('rles').textContent=G.lessonCode;
+  document.getElementById('rok').textContent=G.correct;
+  document.getElementById('rno').textContent=G.wrong;
+  document.getElementById('rpts').textContent=G.score+' / '+G.totalPts;
+
+  const sEl=document.getElementById('rsave');
+  try{
+    await fetch(SAVE_WH,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        student_id:   G.student['chat id'],
+        student_name: G.student['Student Name'],
+        group_id:     G.groupCode,
+        lesson_code:  G.lessonCode,
+        session_num:  G.sessionNum,
+        score:        G.score,
+        total_points: G.totalPts,
+        percentage:   pct,
+        correct_count:G.correct,
+        wrong_count:  G.wrong,
+        submitted_at: new Date().toISOString()
+      })
+    });
+    sEl.textContent='تم الحفظ ✓'; sEl.style.color='var(--green)';
+  }catch(e){
+    sEl.textContent='لم يتم الحفظ ✗'; sEl.style.color='var(--text3)';
+  }
+}
+
+init();
+</script>
+</body>
+</html>

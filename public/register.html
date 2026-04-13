@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>تسجيل الطلاب</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Tajawal', 'Segoe UI', Tahoma, sans-serif;
+      background: var(--tg-theme-bg-color, #f2f2f7);
+      color: var(--tg-theme-text-color, #1c1c1e);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 28px 16px 32px;
+    }
+    .brand { display: flex; flex-direction: column; align-items: center; gap: 14px; margin-bottom: 28px; }
+    .logo-wrap { position: relative; width: 96px; height: 96px; }
+    .logo-ring {
+      position: absolute; inset: 0; border-radius: 50%;
+      background: conic-gradient(#2481cc 0%, #54a9e8 40%, #a8d8f8 60%, #2481cc 100%);
+      padding: 3px; display: flex; align-items: center; justify-content: center;
+    }
+    .logo-inner { width: 100%; height: 100%; border-radius: 50%; overflow: hidden; background: #000; }
+    .logo-inner img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+    .logo-dot {
+      position: absolute; bottom: 4px; left: 4px; width: 18px; height: 18px;
+      border-radius: 50%; background: #29d055; border: 3px solid var(--tg-theme-bg-color, #f2f2f7);
+    }
+    .brand-name h1 {
+      font-size: 22px; font-weight: 800;
+      background: linear-gradient(135deg, #1a6faf, #2481cc, #54a9e8);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text; letter-spacing: 0.5px; text-align: center;
+    }
+    .brand-name span {
+      font-size: 12px; color: #8e8e93; font-weight: 500; letter-spacing: 2px;
+      text-transform: uppercase; display: block; text-align: center; margin-top: 2px;
+    }
+    .card {
+      background: var(--tg-theme-secondary-bg-color, #ffffff);
+      border-radius: 20px; padding: 22px 18px; width: 100%; max-width: 420px;
+      display: flex; flex-direction: column; gap: 16px;
+      box-shadow: 0 2px 16px rgba(36,129,204,0.08);
+    }
+    .field label { display: block; font-size: 13px; font-weight: 700; margin-bottom: 7px; color: #6b7280; }
+    .field input {
+      width: 100%; padding: 13px 14px; border-radius: 12px;
+      border: 1.5px solid rgba(0,0,0,0.09); font-size: 15px; font-family: inherit;
+      background: var(--tg-theme-bg-color, #f2f2f7);
+      color: var(--tg-theme-text-color, #1c1c1e);
+      outline: none; transition: border-color 0.2s, box-shadow 0.2s; text-align: right;
+    }
+    .field input:focus { border-color: #2481cc; box-shadow: 0 0 0 3px rgba(36,129,204,0.12); }
+    .field input.error { border-color: #e74c3c; }
+    .section-label { font-size: 13px; font-weight: 700; color: #6b7280; margin-bottom: 10px; }
+    .groups-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .group-btn {
+      padding: 13px 8px; border-radius: 12px; border: 1.5px solid rgba(36,129,204,0.2);
+      background: var(--tg-theme-bg-color, #f2f2f7); color: var(--tg-theme-text-color, #1c1c1e);
+      font-size: 14px; font-family: inherit; cursor: pointer; text-align: center;
+      transition: all 0.18s; font-weight: 600;
+    }
+    .group-btn:active { transform: scale(0.96); }
+    .group-btn.selected {
+      background: linear-gradient(135deg, #1a6faf, #2481cc);
+      color: #ffffff; border-color: transparent; box-shadow: 0 4px 12px rgba(36,129,204,0.3);
+    }
+    .group-btn.error-border { border-color: #e74c3c; }
+    .groups-loading { text-align: center; font-size: 13px; color: #8e8e93; padding: 14px 0; }
+    .submit-btn {
+      width: 100%; padding: 15px; border-radius: 14px; border: none;
+      background: linear-gradient(135deg, #1a6faf, #2481cc, #3d9be0);
+      color: #ffffff; font-size: 16px; font-weight: 800; font-family: inherit;
+      cursor: pointer; transition: opacity 0.2s, transform 0.15s;
+      margin-top: 4px; letter-spacing: 0.3px; box-shadow: 0 4px 16px rgba(36,129,204,0.35);
+    }
+    .submit-btn:active { transform: scale(0.98); opacity: 0.9; }
+    .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    #error-msg {
+      color: #c0392b; font-size: 13px; font-weight: 600; text-align: center; display: none;
+      padding: 10px 14px; background: #fff0f0; border-radius: 10px;
+      border: 1px solid rgba(231,76,60,0.15);
+    }
+    .loading { display: none; text-align: center; padding: 60px 20px; flex-direction: column; align-items: center; gap: 18px; }
+    .spinner {
+      width: 44px; height: 44px; border: 3.5px solid rgba(36,129,204,0.15);
+      border-top-color: #2481cc; border-radius: 50%; animation: spin 0.75s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .success { display: none; text-align: center; padding: 50px 20px; flex-direction: column; align-items: center; gap: 14px; }
+    .success-icon {
+      width: 80px; height: 80px; border-radius: 50%;
+      background: linear-gradient(135deg, #29d055, #20b048);
+      display: flex; align-items: center; justify-content: center; font-size: 38px;
+      box-shadow: 0 6px 20px rgba(41,208,85,0.3);
+      animation: pop 0.4s cubic-bezier(0.175,0.885,0.32,1.275);
+    }
+    @keyframes pop { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    .success h2 { font-size: 22px; font-weight: 800; }
+    .success p  { font-size: 14px; color: #8e8e93; font-weight: 500; }
+  </style>
+</head>
+<body>
+
+  <div id="form-view" style="width:100%;max-width:420px;display:flex;flex-direction:column;align-items:center;">
+    <div class="brand">
+      <div class="logo-wrap">
+        <div class="logo-ring">
+          <div class="logo-inner">
+            <img id="logo-img" alt="Rageh Mathematics" />
+          </div>
+        </div>
+        <div class="logo-dot"></div>
+      </div>
+      <div class="brand-name">
+        <h1>Mr. Islam Rageh</h1>
+        <span>Mathematics</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="field">
+        <label>الاسم بالكامل</label>
+        <input type="text" id="name" placeholder="مثال: أحمد محمد علي" />
+      </div>
+      <div class="field">
+        <label>رقم الهاتف</label>
+        <input type="tel" id="phone" placeholder="مثال: 01012345678" />
+      </div>
+      <div>
+        <div class="section-label">اختر مجموعتك</div>
+        <div class="groups-loading" id="groups-loading">⏳ جاري تحميل المجموعات...</div>
+        <div class="groups-grid" id="groups-grid" style="display:none;"></div>
+      </div>
+      <div id="error-msg"></div>
+      <button class="submit-btn" id="submit-btn" onclick="submitForm()">تسجيل الآن</button>
+    </div>
+  </div>
+
+  <div id="loading-view" class="loading">
+    <div class="spinner"></div>
+    <p style="color:#8e8e93;font-weight:600;">جاري حفظ بياناتك...</p>
+  </div>
+
+  <div id="success-view" class="success">
+    <div class="success-icon">✓</div>
+    <h2>تم التسجيل بنجاح!</h2>
+    <p id="success-msg">مرحباً بك!</p>
+  </div>
+
+<script>
+  const tg = window.Telegram?.WebApp || {
+    ready: () => {}, expand: () => {},
+    close: () => { alert("✅ تم التسجيل! (وضع تجريبي)"); },
+    initDataUnsafe: { user: { id: "test_user", username: "test" } }
+  };
+  tg.ready();
+  tg.expand();
+
+  const GET_CLASSES_URL   = "https://alisaadeng-n8n.hf.space/webhook/get-classes";
+  const POST_REGISTER_URL = "https://alisaadeng-n8n.hf.space/webhook/register-student";
+
+  let selectedGroup = null;
+  let groups = [];
+
+  async function loadGroups() {
+    try {
+      const res = await fetch(GET_CLASSES_URL, { method: "GET" });
+      const data = await res.json();
+      groups = Array.isArray(data) ? data : data.groups || [];
+      if (groups.length === 0) throw new Error("empty");
+      renderGroups();
+    } catch {
+      groups = [
+        { group_id: "grp_6am", group_name: "مجموعة 6 صباحاً" },
+        { group_id: "grp_8am", group_name: "مجموعة 8 صباحاً" },
+        { group_id: "grp_4pm", group_name: "مجموعة 4 مساءً"  },
+        { group_id: "grp_6pm", group_name: "مجموعة 6 مساءً"  },
+      ];
+      renderGroups();
+    }
+  }
+
+  function renderGroups() {
+    const grid    = document.getElementById("groups-grid");
+    const loading = document.getElementById("groups-loading");
+    loading.style.display = "none";
+    grid.style.display    = "grid";
+    grid.innerHTML = groups.map(g => `
+      <button class="group-btn" id="grp-${g.group_id}"
+        onclick="selectGroup('${g.group_id}','${g.group_name}')">
+        ${g.group_name}
+      </button>
+    `).join("");
+  }
+
+  function selectGroup(id, name) {
+    selectedGroup = { id, name };
+    document.querySelectorAll(".group-btn").forEach(b => b.classList.remove("selected","error-border"));
+    document.getElementById("grp-" + id)?.classList.add("selected");
+  }
+
+  function showError(msg) {
+    const el = document.getElementById("error-msg");
+    el.textContent = msg; el.style.display = "block";
+    setTimeout(() => el.style.display = "none", 3000);
+  }
+
+  async function submitForm() {
+    const name  = document.getElementById("name").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    let hasError = false;
+    document.getElementById("name").classList.toggle("error", !name);
+    if (!name) hasError = true;
+    document.getElementById("phone").classList.toggle("error", !phone || phone.length < 8);
+    if (!phone || phone.length < 8) hasError = true;
+    if (!selectedGroup) {
+      document.querySelectorAll(".group-btn").forEach(b => b.classList.add("error-border"));
+      hasError = true;
+    }
+    if (hasError) { showError("من فضلك أكمل جميع البيانات"); return; }
+
+    document.getElementById("form-view").style.display    = "none";
+    document.getElementById("loading-view").style.display = "flex";
+    document.getElementById("submit-btn").disabled = true;
+
+    const payload = {
+      full_name: name, phone,
+      group_id: selectedGroup.id, group_name: selectedGroup.name,
+      chat_id: tg.initDataUnsafe?.user?.id || "unknown",
+      username: tg.initDataUnsafe?.user?.username || "",
+      registered_at: new Date().toISOString()
+    };
+
+    try {
+      await fetch(POST_REGISTER_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      document.getElementById("loading-view").style.display = "none";
+      document.getElementById("success-view").style.display = "flex";
+      document.getElementById("success-msg").textContent = `أهلاً ${name}! تم تسجيلك في ${selectedGroup.name}`;
+      setTimeout(() => tg.close(), 1000);
+    } catch {
+      document.getElementById("loading-view").style.display = "none";
+      document.getElementById("form-view").style.display    = "flex";
+      document.getElementById("submit-btn").disabled = false;
+      showError("حدث خطأ، حاول مرة أخرى");
+    }
+  }
+
+  // Logo Base64
+  document.getElementById("logo-img").src = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/wAARCADIAMgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD4yooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigB//Z";
+
+  loadGroups();
+</script>
+</body>
+</html>
