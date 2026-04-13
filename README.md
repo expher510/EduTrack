@@ -354,7 +354,7 @@ https://<username>.github.io/<repo>/register.html
 
 ## 👨‍💻 المطور
 
-**Mr. Islam Rageh** — Mathematics Teacher
+**Ali saad glal automation specialist
 
 ---
 <div align="center"><sub>Built with ❤️ for better math education</sub></div>
