@@ -98,6 +98,7 @@ body{
 
 <div class="wrap">
 
+  <!-- Loading -->
   <div id="s-loading" class="scr on">
     <div class="loading-screen">
       <div class="spin"></div>
@@ -105,6 +106,7 @@ body{
     </div>
   </div>
 
+  <!-- Error -->
   <div id="s-error" class="scr">
     <div class="error-screen">
       <div class="error-icon">⚠️</div>
@@ -113,6 +115,7 @@ body{
     </div>
   </div>
 
+  <!-- تأكيد -->
   <div id="s3" class="scr">
     <div class="badge blue">مرحباً 👋</div>
     <div class="sec-title" id="s3-hi"></div>
@@ -133,6 +136,7 @@ body{
     <button class="btn pri" id="s3-btn" onclick="beginQuiz()" disabled>ابدأ الاختبار ←</button>
   </div>
 
+  <!-- الأسئلة -->
   <div id="s4" class="scr">
     <div class="info-bar" id="s4-bar"></div>
     <div class="prog-bar"><div class="prog-fill" id="pfill" style="width:0%"></div></div>
@@ -146,6 +150,7 @@ body{
     <button class="btn pri" id="btn-next" onclick="nextQ()" style="display:none">التالي ←</button>
   </div>
 
+  <!-- النتيجة -->
   <div id="s5" class="scr">
     <div id="rbadge"></div>
     <div class="sec-title" id="rtitle"></div>
@@ -205,6 +210,7 @@ async function gviz(gid){
 }
 
 async function init(){
+  // ── 1. جيب chat_id من Telegram WebApp ──
   const tg = window.Telegram?.WebApp;
   let chatId = '', displayName = '';
 
@@ -215,6 +221,7 @@ async function init(){
     chatId      = String(u.id);
     displayName = [u.first_name, u.last_name].filter(Boolean).join(' ');
   } else {
+    // fallback للتجربة من المتصفح
     const p = new URLSearchParams(window.location.search);
     chatId      = p.get('student_id') || '';
     displayName = decodeURIComponent(p.get('student_name') || 'تجربة');
@@ -225,6 +232,7 @@ async function init(){
     return;
   }
 
+  // ── 2. جيب lesson_code من startapp أو URL ──
   const startParam = tg?.initDataUnsafe?.start_param || '';
   const urlParam   = new URLSearchParams(window.location.search).get('lesson_code') || '';
   G.lessonCode     = startParam || urlParam;
@@ -234,6 +242,7 @@ async function init(){
     return;
   }
 
+  // ── 3. دور على الطالب في الشيت ──
   try{
     const json = await gviz(STD_GID);
     const cols = json.table.cols.map(c => c.label);
@@ -255,6 +264,7 @@ async function init(){
     return;
   }
 
+  // ── 4. جيب session_num من Distribution ──
   try{
     const json = await gviz(DIST_GID);
     const cols = json.table.cols.map(c => c.label);
@@ -269,6 +279,7 @@ async function init(){
     G.sessionNum = '';
   }
 
+  // ── 5. حمّل الأسئلة ──
   await loadQs();
 }
 
